@@ -1,0 +1,40 @@
+#
+#    libc/Makefile
+#
+#    Copyright (C) 2016 ximo<ximoos@foxmail.com>
+#
+
+AS=nasm
+CC=tcc
+
+SFLAGS=-f elf
+CFLAGS=-c -Wall -nostdinc -nostdlib -I ../include
+
+OBJS= crt/crt.o  \
+      stdlib/abs.o stdlib/labs.o stdlib/malloc.o \
+      string/memcpy.o string/memset.o string/strcat.o string/strcpy.o \
+      string/strlen.o string/strncpy.o string/vsprintf.o \
+      unistd/fork.o unistd/getpid.o  \
+      unistd/getuid.o unistd/setuid.o unistd/setsid.o   \
+      unistd/errno.o  unistd/open.o unistd/read.o unistd/stat.o \
+      unistd/execve.o unistd/_exit.o unistd/waitpid.o unistd/sbrk.o \
+      stdio/printf.o  unistd/write.o unistd/dup.o unistd/fstat.o \
+      ctype/__ctype.o ctype/isalnum.o ctype/isalpha.o ctype/iscntrl.o \
+      ctype/isdigit.o ctype/islower.o ctype/isprint.o ctype/ispuntc.o \
+      ctype/isupper.o ctype/isxdigit.o ctype/isspace.o ctype/isgraph.o \
+      ctype/tolower.o ctype/toupper.o
+
+.s.o:
+	@echo         AS	$<
+	@$(AS) $(SFLAGS) -o $@ $<
+.c.o:
+	@echo         CC	$<
+	@$(CC) $(CFLAGS) -o $@ $<
+
+libc.a: $(OBJS)
+	@echo         AR       OBJS
+	@ar rcs   libc.a $(OBJS) 
+
+clean: 
+	-del libc.a crt\*.o stdio\*.o
+	-del stdlib\*.o string\*.o unistd\*.o stdio\*.o ctype\*.o

@@ -1,0 +1,19 @@
+
+FireKylin
+
+    FireKylin is a simple implementation of A Unix-like Operating System
+  based on x86. It won't like MINIX, it would use big kernel; it won't like
+  Linux, I want it do not just a kernel, it also content command, sh, 
+  untily,and so on, so I want it won't be like BSD.
+    All of the Operating System development would be compatibe to one or 
+  two other Operating System, so that it would attact more people change 
+  to it . But for FireKylin. I just want to implemente it by my idea, I 
+  really do not want to compatibe Operating System. But I would refer to 
+  the design of other Opertimg System and porting code for them, like Linux,
+  DSD, GNU .etc .
+
+License
+
+    * The code is open, everybody can use,modify it.
+    * The Copyright belongs to ximo<ximoos@foxmail.com>.
+    * Every shoud not to distribute this code. 

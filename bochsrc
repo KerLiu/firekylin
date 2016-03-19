@@ -1,0 +1,16 @@
+#
+#      firekylin/bochsrc
+#
+#      Copyright (C) 2016 ximo<ximoos@foxmail.com>
+#
+
+megs:64
+
+romimage: file="D:/Program Files/bochs/BIOS-bochs-latest"
+vgaromimage: file="D:/Program Files/bochs/VGABIOS-lgpl-latest"
+
+floppya: type=1_44, 1_44="System.img", status=inserted
+
+ata0-master: type=disk, path="1.44.img", mode=flat, cylinders=80, heads=2, spt=18
+
+boot: a
