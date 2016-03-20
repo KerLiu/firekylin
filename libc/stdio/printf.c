@@ -17,6 +17,6 @@ int myprintf(char *fmt,...)
 
 	va_start(ap, fmt);
 	i = vsprintf(buf, fmt, ap);
-	write(0,buf, i);
+	write(0,buf,i);
 	return i;
 }

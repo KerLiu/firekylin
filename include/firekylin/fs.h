@@ -12,7 +12,7 @@
 
 #define BUF_SIZE	1024
 struct buffer {
-	dev_t b_dev;
+	dev_t 		b_dev;
 	unsigned int    b_block;
 	unsigned short  b_flag;
 	unsigned short  b_count;
@@ -34,11 +34,11 @@ struct inode {
 	dev_t 		i_dev;
 	ino_t 		i_ino;
 	mode_t 		i_mode;
+	nlink_t 	i_nlink;
 	uid_t 		i_uid;
 	gid_t 		i_gid;
-	nlink_t 	i_link;
+	dev_t		i_rdev;
 	off_t 		i_size;
-	time_t 		i_otime;
 	time_t 		i_atime;
 	time_t 		i_mtime;
 	time_t 		i_ctime;

@@ -182,7 +182,7 @@ void execption(unsigned long unuesd)
 		return;
 	}
 
-	printk("\nException:%s\tError code:%x\n", msg[tf->nr], tf->err);
+	printk("\nException:%d\tError code:%x\n", tf->nr, tf->err);
 	printk("CS:EIP=%x:%x\t EFLAGS=%x\t SS:ESP=%x:%x\n", tf->cs, tf->eip,
 			tf->eflags, tf->ss, tf->esp);
 	panic("Current pid:%d\n", (CURRENT_TASK())->pid);

@@ -17,32 +17,23 @@ struct dir_entry {
 
 int main(void)
 {
-	char buf[41];
-	int size;
-	struct stat statbuf;
+	struct dir_entry *de;
+	char buf[1024];
 	int fd;
-	int fd2;
+	int size = 0;
+	int entries;
 
-	stat("/sys/dev/tty1", &statbuf);
+	fd = open(".", O_READ, 0);
 
-	printf("dev %x\n", statbuf.st_dev);
-	printf("ino %x\n", statbuf.st_ino);
-	printf("mode %x\n", statbuf.st_mode);
-	printf("link %x\n", statbuf.st_nlink);
-	printf("rdev %x\n",statbuf.st_rdev);
-	printf("uid %x\n", statbuf.st_uid);
-	printf("gid %x\n", statbuf.st_gid);
-	printf("size %d\n", statbuf.st_size);
+	size = read(fd, buf, 1024);
 
-	fd2=dup(0);
-	fstat(fd2, &statbuf);
+	entries = size / sizeof(struct dir_entry);
+	de = (struct dir_entry *) buf;
 
-	printf("dev %x\n", statbuf.st_dev);
-	printf("ino %x\n", statbuf.st_ino);
-	printf("mode %x\n", statbuf.st_mode);
-	printf("link %x\n", statbuf.st_nlink);
-	printf("rdev %x\n",statbuf.st_rdev);
-	printf("uid %x\n", statbuf.st_uid);
-	printf("gid %x\n", statbuf.st_gid);
-	printf("size %d\n", statbuf.st_size);
+	while (entries--) {
+		if (de->ino)
+			printf("%s\t", de->name);
+		de++;
+	}
+	printf("\n");
 }

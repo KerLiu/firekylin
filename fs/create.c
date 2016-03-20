@@ -53,7 +53,7 @@ void add_entry(struct inode *dir_inode, char *name)
 		panic("add entry :inode use over");
 
 	inode = iget(dir_inode->i_dev, ino);
-	inode->i_link = 1;
+	inode->i_nlink = 1;
 	iput(inode);
 
 	for (int i = 0; i < 7 + 512; i++) {

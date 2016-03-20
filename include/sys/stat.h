@@ -18,7 +18,6 @@ struct stat {
 	gid_t   st_gid; 	/* Group ID of file.			*/
 	dev_t   st_rdev; 	/* Device ID (char/block special file). */
 	off_t   st_size; 	/* regular files size in bytes.		*/
-	time_t  st_otime; 	/* Time of create.			*/
 	time_t  st_atime; 	/* Time of last access.			*/
 	time_t  st_mtime; 	/* Time of last data modification.	*/
 	time_t  st_ctime; 	/* Time of last status change.		*/
@@ -63,7 +62,6 @@ struct stat {
 
 /* Access and modification times structure */
 struct utimebuf {
-	time_t otime;
 	time_t atime;
 	time_t mtime;
 	time_t ctime;

@@ -83,11 +83,11 @@ int sys_write(int fd, char *buf, size_t size)
 			res = write_file(inode, buf, file->f_pos, size);
 			break;
 		case S_IFCHR:
-			res = write_char(inode->i_zone[0], buf, file->f_pos,
+			res = write_char(inode->i_rdev, buf, file->f_pos,
 					size);
 			break;
 		case S_IFBLK:
-			res = write_blk(inode->i_zone[0], buf, file->f_pos,
+			res = write_blk(inode->i_rdev, buf, file->f_pos,
 					size);
 			break;
 		case S_IFIFO:

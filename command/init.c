@@ -19,10 +19,6 @@ int main(int argc, char **argv, char **envp)
 	
 	while(1){
 		pid=fork();
-		if(pid<0){
-			printf("System error ! Can not start new process\n");
-			printf("Please restart your computer\n");
-		}
 		if(pid){
 			waitpid(pid,NULL,0);
 		} else{

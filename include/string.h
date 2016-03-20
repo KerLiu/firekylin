@@ -19,7 +19,7 @@ extern char*  strcpy(char *dst, char *src);
 extern char*  strcat(char *dst, char *src);
 extern size_t strlen(const char *s);
 extern char*  strchr(const char *s, int c);
-extern int    strcmp(const char *s1, const char *s2);
+extern int    strcmp(char *s1,char *s2);
 extern int    stricmp(const char *s1, const char *s2);
 
 extern char*  strncpy(char *dst, char *src, size_t n);

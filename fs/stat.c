@@ -14,12 +14,11 @@ static void copy_stat(struct inode *inode ,struct stat *statbuf)
 	statbuf->st_dev = inode->i_dev;
 	statbuf->st_ino = inode->i_ino;
 	statbuf->st_mode = inode->i_mode;
-	statbuf->st_nlink = inode->i_link;
+	statbuf->st_nlink = inode->i_nlink;
 	statbuf->st_uid = inode->i_uid;
 	statbuf->st_gid = inode->i_gid;
-	statbuf->st_rdev = inode->i_zone[0];
+	statbuf->st_rdev = inode->i_rdev;
 	statbuf->st_size = inode->i_size;
-	statbuf->st_otime = inode->i_otime;
 	statbuf->st_atime = inode->i_atime;
 	statbuf->st_mtime = inode->i_mtime;
 	statbuf->st_ctime = inode->i_ctime;
@@ -96,7 +95,6 @@ int sys_utime(char *filename, struct utimebuf *timebuf)
 		return -ENOENT;
 
 	if (timebuf) {
-		inode->i_otime = timebuf->otime;
 		inode->i_ctime = timebuf->ctime;
 	}
 	inode->i_atime = inode->i_mtime = current_time();

@@ -86,11 +86,11 @@ int sys_read(int fd, char *buf, size_t size)
 			res = read_file(inode, buf, file->f_pos, size);
 			break;
 		case S_IFCHR:
-			res = read_char(inode->i_zone[0], buf, file->f_pos,
+			res = read_char(inode->i_rdev, buf, file->f_pos,
 					size);
 			break;
 		case S_IFBLK:
-			res = read_blk(inode->i_zone[0], buf, file->f_pos,
+			res = read_blk(inode->i_rdev, buf, file->f_pos,
 					size);
 			break;
 		case S_IFIFO:

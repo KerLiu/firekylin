@@ -102,14 +102,14 @@ void do_page_fault(struct trapframe *tf)
 {
 	unsigned long cr2;
 	struct task *current;
-	static int count;
-	count++;
-	if (count == 20) {
-		printk("Too Much Page Fault");
-		irq_enable();
-		while(1){
-		}
-	}
+//	static int count;
+//	count++;
+//	if (count == 2) {
+//		printk("Too Much Page Fault");
+//		irq_enable();
+//		while(1){
+//		}
+//	}
 
 	asm("movl %%cr2,%%eax":"=a"(cr2));
 	current = CURRENT_TASK();

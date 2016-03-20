@@ -52,7 +52,6 @@ commands:
 	$(CC) $(CFLAGS) -o command/sh.o command/sh.c
 	$(CC) $(CFLAGS) -o command/init.o command/init.c
 	$(CC) $(CFLAGS) -o command/ls.o command/ls.c
-	$(CC) $(CFLAGS) -o command/t1.o command/t1.c
 	$(CC) $(CFLAGS) -o command/exec.o command/exec.c
 	$(CC) $(CFLAGS) -o command/argv.o command/argv.c
 
@@ -73,14 +72,14 @@ install:
 	$(LD) -o command/sh command/sh.o  libc/libc.a
 	$(LD) -o command/init command/init.o  libc/libc.a
 	$(LD) -o command/ls command/ls.o  libc/libc.a
+	$(LD) -o command/exec command/exec.o  libc/libc.a
 	$(LD) -o command/argv command/argv.o  libc/libc.a
-	$(LD) -o command/t1 command/t1.o  libc/libc.a
 	mkdir tmpdir
 	sudo mount -t minix 1.44.img -o loop tmpdir
 	cp   command/sh tmpdir/sys/bin/sh
 	cp   command/init tmpdir/sys/bin/init
+	cp   command/exec tmpdir/sys/bin/exec
 	cp   command/ls tmpdir/sys/bin/ls
-	cp   command/t1 tmpdir/sys/bin/t1
 	cp   command/argv tmpdir/sys/bin/argv
 	sudo umount 1.44.img
 	rmdir tmpdir

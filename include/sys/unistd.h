@@ -36,5 +36,6 @@ extern int execve(char *filename, char **argv, char **envp);
 extern void _exit(int status);
 extern int sbrk(int inc);
 extern int dup(int fd);
+extern int chdir(char *dirname);
 
 #endif
