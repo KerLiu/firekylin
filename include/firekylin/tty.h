@@ -7,17 +7,10 @@
 #ifndef _TTY_H
 #define _TTY_H
 
+#include <termios.h>
 #include <firekylin/sched.h>
 
-#define NCCS 17
-struct termios {
-	unsigned long c_iflag;
-	unsigned long c_oflag;
-	unsigned long c_cflag;
-	unsigned long c_lflag;
-	unsigned char c_line;
-	unsigned char c_cc[NCCS];
-};
+
 
 #define TTY_BUF_SIZE 1024
 struct tty_buf {

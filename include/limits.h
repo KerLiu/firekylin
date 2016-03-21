@@ -37,4 +37,5 @@
 #define ULONG_MIN	          0L
 #define ULONG_MAX	 0xFFFFFFFFL
 
+#define PATH_MAX	512
 #endif

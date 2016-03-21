@@ -10,8 +10,5 @@
 
 int toupper(int c)
 {
-	if(islower(c))
-		c-=0x20;
-	
-	return c;
+	return islower(c) ? c-0x20 : c;
 }

@@ -11,10 +11,10 @@ SFLAGS=-f elf
 CFLAGS=-c -Wall -nostdinc -nostdlib -I ../include
 
 OBJS= crt/crt.o  \
-      stdlib/abs.o stdlib/labs.o stdlib/malloc.o \
+      stdlib/abs.o stdlib/labs.o stdlib/malloc.o stdlib/getenv.o \
       string/memcpy.o string/memset.o string/strcat.o string/strcpy.o \
       string/strlen.o string/strncpy.o string/strcmp.o string/vsprintf.o \
-      unistd/fork.o unistd/getpid.o  \
+      string/strerror.o unistd/fork.o unistd/getpid.o  string/strncmp.o \
       unistd/getuid.o unistd/setuid.o unistd/setsid.o   \
       unistd/errno.o  unistd/open.o unistd/read.o unistd/stat.o \
       unistd/execve.o unistd/_exit.o unistd/waitpid.o unistd/sbrk.o \
@@ -37,5 +37,6 @@ libc.a: $(OBJS)
 	@ar rcs   libc.a $(OBJS) 
 
 clean: 
-	-del libc.a crt\*.o stdio\*.o
-	-del stdlib\*.o string\*.o unistd\*.o stdio\*.o ctype\*.o
+	-del libc.a
+	-del stdlib\*.o string\*.o unistd\*.o stdio\*.o ctype\*.o 
+	-del crt\*.o stdio\*.o

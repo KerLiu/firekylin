@@ -26,7 +26,9 @@ extern char*  strncpy(char *dst, char *src, size_t n);
 extern char*  strncat(char *dst, char *src, size_t n);
 extern size_t strnlen(const char *s, size_t n);
 extern char*  strnchr(const char *s, int c, size_t n);
-extern int    strncmp(const char *s1, const char *s2, size_t n);
+extern int    strncmp(char *s1, char *s2, size_t n);
 extern int    strnicmp(const char *s1, const char *s2, size_t n);
+
+extern char * strerror(int errno);
 
 #endif

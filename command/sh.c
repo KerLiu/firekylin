@@ -53,7 +53,7 @@ void execcmd(char **argv)
 	if (pid) {
 		waitpid(pid, NULL, 0);
 	} else {
-		_exit(execve(argv[0], argv, NULL));
+		_exit(execve(argv[0], argv,NULL));
 	}
 }
 

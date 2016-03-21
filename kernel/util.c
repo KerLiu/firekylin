@@ -7,7 +7,7 @@
 #include <stdarg.h>
 #include <firekylin/kernel.h>
 
-extern int con_write(char* buf, int len);
+extern int tty_write(dev_t dev,char * buf,off_t off,size_t size);
 
 static char printk_buf[512];
 
@@ -77,7 +77,7 @@ int printk(char* fmt, ...)
 
 	va_start(ap, fmt);
 	i = sformat(printk_buf, fmt, ap);
-	con_write(printk_buf, i);
+	tty_write(0,printk_buf, 0,i);
 	return i;
 }
 
@@ -89,7 +89,7 @@ void panic(char* fmt, ...)
 	printk("\n\n\t%sKernel Panic:\t");
 	va_start(ap, fmt);
 	i = sformat(printk_buf, fmt, ap);
-	con_write(printk_buf, i);
+	tty_write(0,printk_buf, 0,i);
 	irq_disable();
 	asm("hlt");
 }

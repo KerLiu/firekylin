@@ -49,18 +49,17 @@ libc.a:
 	make -C libc
 
 commands:
-	$(CC) $(CFLAGS) -o command/sh.o command/sh.c
-	$(CC) $(CFLAGS) -o command/init.o command/init.c
-	$(CC) $(CFLAGS) -o command/ls.o command/ls.c
-	$(CC) $(CFLAGS) -o command/exec.o command/exec.c
-	$(CC) $(CFLAGS) -o command/argv.o command/argv.c
+	make -C command
 
+install:
+	make install -C command
 clean:
 	-del boot.bin kernel.bin kernel.map build.exe System.img
-	-del driver\block\*.o driver\char\*.o 
+	-del driver\block\*.o driver\char\*.o  mm\*.o
 	-del init\*.o kernel\*.o driver\*.o fs\*.o fs\minix\*.o 
 	-del libc\*.a libc\*.o libc\string\*.o libc\unistd\*.o libc\stdlib\*.o
-	-del libc\ctype\*.o
+	-del libc\ctype\*.o libc\crt\*.o libc\stdio\*.o
+	make clean -C command
 	
 run: System.img
 	bochs -q -f bochsrc
@@ -68,21 +67,6 @@ run: System.img
 dbg: System.img
 	bochsdbg -q -f bochsrc
 
-install:
-	$(LD) -o command/sh command/sh.o  libc/libc.a
-	$(LD) -o command/init command/init.o  libc/libc.a
-	$(LD) -o command/ls command/ls.o  libc/libc.a
-	$(LD) -o command/exec command/exec.o  libc/libc.a
-	$(LD) -o command/argv command/argv.o  libc/libc.a
-	mkdir tmpdir
-	sudo mount -t minix 1.44.img -o loop tmpdir
-	cp   command/sh tmpdir/sys/bin/sh
-	cp   command/init tmpdir/sys/bin/init
-	cp   command/exec tmpdir/sys/bin/exec
-	cp   command/ls tmpdir/sys/bin/ls
-	cp   command/argv tmpdir/sys/bin/argv
-	sudo umount 1.44.img
-	rmdir tmpdir
 
 count:
 	@echo dirs: $(shell ls -lR |grep ^d |wc -l)

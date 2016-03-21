@@ -10,8 +10,5 @@
 
 int tolower(int c)
 {
-	if(isupper(c))
-		c+=0x20;
-	
-	return c;
+	return isupper(c) ? c+0x20 : c;
 }

@@ -36,6 +36,13 @@ struct timespec {
 	long tv_nsec; 	/* Nanoseconds	*/
 };
 
+#define MIN    		(60L)
+#define HOUR   		(60*MIN)
+#define DAY    		(24*HOUR)
+#define YEAR   		(365*DAY)
+#define LEAPYEAR 	(366*DAY)
+
 extern time_t mktime(struct tm *tmptr);
+extern time_t time(time_t *tloc);
 
 #endif
