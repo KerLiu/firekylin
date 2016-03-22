@@ -96,19 +96,6 @@ void wake_up(struct task **p)
 	}
 }
 
-void dump_task(void)
-{
-	for (int i = 0; i < NR_TASK; i++) {
-		if (task_table[i]) {
-			printk("index:%d value:%x ", i, task_table[i]);
-			printk("count:%d ", task_table[i]->count);
-			printk("state:%d ", task_table[i]->state);
-			printk("kesp1:%x ",(long)task_table[i]+sizeof(struct task));
-			printk("kesp:%x\n",task_table[i]->kesp);
-		}
-	}
-}
-
 pid_t sys_getpid(void)
 {
 	return (CURRENT_TASK() )->pid;

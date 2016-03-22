@@ -79,8 +79,10 @@ int sys_write(int fd, char *buf, size_t size)
 		file->f_pos = inode->i_size;
 	switch (inode->i_mode & S_IFMT) {
 		case S_IFREG:
-		case S_IFDIR:
 			res = write_file(inode, buf, file->f_pos, size);
+			break;
+		case S_IFDIR:
+			res = -EISDIR;
 			break;
 		case S_IFCHR:
 			res = write_char(inode->i_rdev, buf, file->f_pos,

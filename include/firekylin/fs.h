@@ -10,6 +10,14 @@
 #include <sys/types.h>
 #include <firekylin/sched.h>
 
+
+struct fs_operation{
+	struct super *(*read_super)(struct super *super);
+	struct super *(*write_super)(struct super *super);
+	struct inode *(*read_inode)(struct inode *inode);
+	struct inode *(*write_inode)(struct inode *inode);
+};
+
 #define BUF_SIZE	1024
 struct buffer {
 	dev_t 		b_dev;

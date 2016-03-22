@@ -21,52 +21,6 @@ void con_init()
 	cur = base + (a & 0xff) * 512 + inb(0x3d5) * 2;
 }
 
-void con_write(char* buf, int len)
-{
-	char *str = buf;
-	char *tmp = (char*) cur;
-
-	while (len--) {
-		if (*str > 0x1f && *str < 0x7f) {
-			*tmp++ = *str++;
-			*tmp++ = color;
-		} else if (*str == '\n') {
-			tmp = (char*) ((((int) tmp - base) / 160 + 1) * 160
-					+ base);
-			str++;
-		} else if (*str == '\t') {
-			tmp =(char*) ((((int) tmp - base) / 16 + 1)
-							* 16 + base);
-			str++;
-		} else if(*str=='\b'){
-			*--tmp=15;
-			*--tmp=0x20;
-		}
-		if (tmp == (char*) 0xc00bff80) {
-			memcpy(base, (tmp-24*2*80), 24*2*80);
-			tmp = (char*) base + 24 * 2 * 80;
-			orgin = base;
-		}
-	}
-	cur = (int) tmp;
-	while (cur - orgin >= 25 * 80 * 2) {
-		orgin += 160;
-	}
-
-	for(int i=0;i<80;i++){
-		*tmp++=0x20;
-		*tmp++=0xf;
-	}
-	outb(0x3d4, 12);
-	outb(0x3d5, (orgin-base)/2/256);
-	outb(0x3d4, 13);
-	outb(0x3d5, (orgin-base)/2%256);
-	outb(0x3d4, 14);
-	outb(0x3d5, (cur-base)/2/256);
-	outb(0x3d4, 15);
-	outb(0x3d5, (cur-base)/2%256);
-}
-
 int con_write2(struct tty_struct *tty)
 {
 	char ch;

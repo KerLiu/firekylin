@@ -8,6 +8,7 @@
 #include <sys/fcntl.h>
 #include <sys/stat.h>
 #include <stdio.h>
+#include <string.h>
 
 #define NAME_LEN	14
 struct dir_entry {
@@ -15,7 +16,7 @@ struct dir_entry {
 	char name[NAME_LEN];
 };
 
-int main(void)
+int main(int argc, char **argv)
 {
 	struct dir_entry *de;
 	char buf[1024];
@@ -23,17 +24,24 @@ int main(void)
 	int size = 0;
 	int entries;
 
-	fd = open(".", O_READ, 0);
+	if (argc > 1) {
+		fd = open(argv[1], O_READ, 0);
+	} else {
+		fd = open(".", O_READ, 0);
+	}
+	if (fd < 0)
+		printf("%s\n", strerror(errno));
 
-	size = read(fd, buf, 1024);
+	while ((size = read(fd, buf, 1024))) {
 
-	entries = size / sizeof(struct dir_entry);
-	de = (struct dir_entry *) buf;
+		entries = size / sizeof(struct dir_entry);
+		de = (struct dir_entry *) buf;
 
-	while (entries--) {
-		if (de->ino)
-			printf("%s\t", de->name);
-		de++;
+		while (entries--) {
+			if (de->ino)
+				printf("%s\t", de->name);
+			de++;
+		}
 	}
 	printf("\n");
 }

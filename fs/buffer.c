@@ -130,10 +130,13 @@ struct buffer * bread(dev_t dev,long block)
 
 int sys_sync()
 {
+	extern void sync_inode();
 	struct buffer *bh;
+
+	sync_inode();
 	for (bh = buffer_table; bh < buffer_table + NR_BUFFER; bh++) {
 		lock_buffer(bh);
-		if (bh->b_dev && (bh->b_flag & B_DIRTY)) {
+		if (bh->b_flag & B_DIRTY) {
 			write_block(bh);
 			bh->b_flag &= ~B_DIRTY;
 		}

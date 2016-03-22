@@ -76,6 +76,7 @@ static struct inode * __minix1_rw_inode(struct inode *inode, int rw)
 		m1_read_inode(inode, m1);
 	} else {
 		m1_write_inode(inode, m1);
+		buf->b_flag|=B_DIRTY;
 	}
 	brelse(buf);
 	return inode;
@@ -123,8 +124,6 @@ struct inode * minix1_look_up(struct inode *dir_inode, char *filename)
 		de++;
 	}
 	brelse(buf);
-
-	iput(dir_inode);
 	return NULL;
 }
 
@@ -138,6 +137,7 @@ static int __minix1_bmap(struct inode *inode, int block, int create)
 			inode->i_zone[block] = minix1_alloc_block(inode->i_dev);
 			inode->i_ctime = current_time();
 			inode->i_flag |= I_DIRTY;
+			printk("wbmp_come here");
 		}
 		return inode->i_zone[block];
 	}

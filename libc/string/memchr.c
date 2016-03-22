@@ -6,7 +6,7 @@
 
 #include <string.h>
 
-void* memchr(const void * buf, int chr, size_t n)
+void * memchr(const void * buf, int chr, size_t n)
 {
 	char *s = (char *) buf;
 

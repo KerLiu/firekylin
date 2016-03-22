@@ -69,11 +69,11 @@ struct inode * idup(struct inode *inode)
 
 struct inode * iget(dev_t dev, ino_t ino)
 {
-	struct inode * inode ;
-	
+	struct inode * inode;
+
 	lock_inode_table();
-	
-	if(!dev)
+repeat:
+	if (!dev)
 		goto no_dev;
 	inode = inode_table;
 	while (inode < inode_table + NR_INODE) {
@@ -92,10 +92,15 @@ no_dev:
 			inode->i_count++;
 			unlock_inode_table();
 			ilock(inode);
+			if(inode->i_flag&I_DIRTY){
+				minix1_write_inode(inode);
+				iunlock(inode);
+				goto repeat;
+			}
 			inode->i_dev = dev;
 			inode->i_ino = ino;
-			inode->i_flag = 0;
-			if (dev)	
+			inode->i_flag =I_BUSY ;
+			if (dev)
 				minix1_read_inode(inode);
 			return inode;
 		}
@@ -122,38 +127,50 @@ void iput(struct inode * inode)
 struct inode *namei(char *filepath, char **basename)
 {
 	struct inode *inode;
-	char name[NAME_LEN];
+	char name[NAME_LEN + 1];
 	char *n;
 
-	if (*filepath =='/'){
+	if (*filepath == '/') {
 		filepath++;
 		inode = idup(root_inode);
-	}else
-		inode=idup((CURRENT_TASK())->pwd);
+	} else
+		inode = idup((CURRENT_TASK() )->pwd);
 
-	while (1) {
-		n = name;
+	while (*filepath) {
+		if(basename)
+			*basename=filepath;
+
 		for (int i = 0; i < NAME_LEN; i++) {
-			if (*filepath == 0) {
-				*n = 0;
-				if (!basename)
-					if (!(inode = minix1_look_up(inode,
-							name))) {
-						return NULL;
-					};
-
-				return inode;
-			} else if (*filepath == '/') {
-				filepath++;
-				*n = 0;
+			if (*filepath == 0 || *filepath == '/') {
+				name[i] = 0;
 				break;
-			} else
-				*n++ = *filepath++;
+			}
+			name[i] = *filepath++;
 		}
-		if (basename)
-			*basename = filepath;
+		if (!*filepath && basename)
+			return inode;
+
+		if (*filepath == '/')
+			filepath++;
+
 		if (!(inode = minix1_look_up(inode, name))) {
 			return NULL;
 		}
+	}
+	return inode;
+}
+
+void sync_inode()
+{
+	struct inode *inode = inode_table;
+
+	while (inode < inode_table + NR_INODE) {
+		ilock(inode);
+		if (inode->i_flag & I_DIRTY) {
+			minix1_write_inode(inode);
+			inode->i_flag &= ~I_DIRTY;
+		}
+		iunlock(inode);
+		inode++;
 	}
 }

@@ -23,5 +23,7 @@
 #define ENOEXEC		14
 #define ENODEV		15
 #define EMFILE		16
+#define EEXIST		17
+#define ENOSPACE	18
 
 #endif

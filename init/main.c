@@ -40,6 +40,7 @@ void start(void)
 	}
 
 	mount_root();
-	sys_exec("/sys/bin/init", NULL, NULL);
+
+	sys_exec("/bin/init", NULL, NULL);
 	panic("Can't find init");
 }

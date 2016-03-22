@@ -46,7 +46,11 @@ void execcmd(char **argv)
 {
 	int pid;
 	if (strcmp(argv[0], "cd") == 0) {
-		chdir(argv[1]);
+		if(argv[1]){
+			chdir(argv[1]);
+		}else{
+			chdir("/");
+		}
 		return ;
 	}
 	pid = fork();
@@ -62,6 +66,8 @@ int main(void)
 	int pid;
 	char *argv[MAX_ARG];
 	char buf[100];
+
+	printf("\n\nWelcome To FireKylin 0.1 !\n\n\n");
 
 	while (1) {
 		printf("%s", ps1);

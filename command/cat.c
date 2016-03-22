@@ -20,7 +20,7 @@ int main(int argc, char *argv[])
 	if(argc<2)
 		return 0;
 	if((fd=open(argv[1],O_READ,0))<0)
-		return printf("%s",strerror(errno));
+		return printf("%s\n",strerror(errno));
 
 	while((size=read(fd,buf,1024)))
 	{

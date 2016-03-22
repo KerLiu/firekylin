@@ -7,6 +7,8 @@
 #include <sys/types.h>
 #include <sys/unistd.h>
 
+#define NALLOC 	512
+
 /*
  * size should be 16 Bytes.
  */
@@ -16,21 +18,7 @@ struct block_list {
 	char padding[8];
 };
 
-#define NALLOC 	512
-
 static struct block_list base = { NULL, 1, 0 };
-
-#include <stdio.h>
-void dump_block_list(void)
-{
-	struct block_list *tmp = &base;
-
-	do {
-		printf("base:%x  end:%x  next:%x\n", tmp, tmp + tmp->size,
-				tmp->next);
-		tmp = tmp->next;
-	} while (tmp);
-}
 
 void free(void *p)
 {
