@@ -51,8 +51,3 @@ int sys_sigwait()
 {
 	return -ERROR;
 }
-
-int sys_alarm()
-{
-	return -ERROR;
-}

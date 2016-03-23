@@ -123,6 +123,7 @@ struct inode * minix1_look_up(struct inode *dir_inode, char *filename)
 		}
 		de++;
 	}
+	iput(dir_inode);
 	brelse(buf);
 	return NULL;
 }

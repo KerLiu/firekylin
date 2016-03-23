@@ -59,19 +59,79 @@ static time_t mktimek(int year, int mon, int day, int hour, int min, int sec)
 	res = res * 60 + sec;
 	return res;
 }
+static struct timer *timer_list;
+
+void rm_timer(struct timer *timer)
+{
+	struct timer *timer_tmp;
+
+	if(timer_list == timer){
+		timer_list=timer->t_next;
+		return ;
+	}
+	timer_tmp=timer_list;
+	while(timer_tmp){
+		if(timer_tmp->t_next==timer){
+			timer_tmp->t_next=timer->t_next;
+			return ;
+		}
+		timer_tmp=timer_tmp->t_next;
+	}
+}
+
+void add_timer(long much, void (*fn)(void))
+{
+	struct task *current=CURRENT_TASK();
+	struct timer *timer=&current->timer;
+	struct timer *timer_tmp;
+
+	if(timer->t_time)
+		rm_timer(timer);
+
+	timer->t_time=clock+much;
+	timer->t_fun=fn;
+
+	if(!timer_list){
+		timer_list=timer;
+		timer->t_next=NULL;
+		return ;
+	}
+
+	if(timer_list->t_time<timer->t_time){
+		timer->t_next=timer_list;
+		timer_list=timer;
+		return ;
+	}
+
+	timer_tmp=timer_list;
+	while(timer_tmp->t_next && timer->t_next->t_time <timer->t_time)
+		timer_tmp=timer_tmp->t_next;
+
+	timer->t_next=timer_tmp->t_next;
+	timer_tmp->t_next=timer;
+}
 
 static void do_clock(struct trapframe *tf)
 {
 	struct task *current=CURRENT_TASK();
-	
+
 	outb(0x20, 0x20);
 	clock++;
-	
+
 	if(tf->cs&3){
 		current->utime++;
 	}else
 		current->stime++;
 
+	if(timer_list && timer_list->t_time <=clock){
+		void (*fn)(void);
+		timer_list->t_time=0;
+		fn=timer_list->t_fun;
+		timer_list=timer_list->t_next;
+		if(fn){
+			(fn)();
+		}
+	}
 	if (--current->count < 0) {
 		current->count = 0;
 		sched();

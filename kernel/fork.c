@@ -32,6 +32,7 @@ int sys_fork(long unuesd)
 	task->cutime=0;
 	task->cstime=0;
 	task->start=current_time();
+	task->timer.t_time=0;
 	stack = (unsigned long *) ((((long) &unuesd) & 0xfff) | (long) task);
 	--stack;		// ret
 	*(--stack) = 0x13200;	// popf

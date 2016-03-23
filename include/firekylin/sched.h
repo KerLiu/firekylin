@@ -40,6 +40,12 @@ struct tss_struct {
 	unsigned short iobase;
 };
 
+struct timer{
+	clock_t t_time;
+	void (*t_fun)(void);
+	struct timer *t_next;
+};
+
 #define NR_OPEN		32
 struct task {
 	long    kesp; 		/* kernel stack_end. 	*/
@@ -67,6 +73,7 @@ struct task {
 	unsigned int tty; 	/* use which tty. 	*/
 	struct inode *pwd; 	/* current dir inode. 	*/
 	struct file *file[NR_OPEN]; /* file open. 	*/
+	struct timer timer;
 	struct task *parent;
 	struct task *next;
 };
@@ -118,6 +125,9 @@ struct task {
     })
 
 extern struct task * task_table[];
+
+extern time_t start_time;
+extern clock_t clock;
 
 void sched(void);
 void sleep_on(struct task **p);

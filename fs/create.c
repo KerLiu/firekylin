@@ -10,6 +10,40 @@
 #include <sys/fcntl.h>
 #include <errno.h>
 
+struct inode * find_entry(struct inode *dir_inode, char *filename)
+{
+	struct buffer *buf;
+	struct inode *inode = NULL;
+	struct dir_entry *de;
+	int entries;
+	int ino;
+
+	if (!dir_inode)
+		panic("find_entry:dir_inode is NULL");
+	if (filename[0] == '.' && filename[1] == 0)
+		return dir_inode;
+	entries = dir_inode->i_size / sizeof(struct dir_entry);
+
+	buf = bread(dir_inode->i_dev, dir_inode->i_zone[0]);
+
+	de = (struct dir_entry *) buf->b_data;
+	while (entries--) {
+		if (!strncmp(de->name, filename, NAME_LEN)) {
+			ino = de->ino;
+			brelse(buf);
+			if(ino ==dir_inode->i_ino){
+				inode=dir_inode;
+			}else{
+				inode = iget(dir_inode->i_dev, de->ino);
+				iput(dir_inode);
+			}
+			return inode;
+		}
+		de++;
+	}
+	brelse(buf);
+	return NULL;
+}
 void add_entry(struct inode *inode, char *name, ino_t ino)
 {
 	struct buffer *buf;
@@ -66,8 +100,7 @@ int sys_create2(char *pathname)
 	}
 
 	dir_inode->i_count++;
-	if ((inode = minix1_look_up(dir_inode, basename))) {
-		iput(dir_inode);
+	if ((inode = find_entry(dir_inode, basename))) {
 		iput(inode);
 		return -EEXIST;
 	}
@@ -111,8 +144,7 @@ int sys_mkdir(char *pathname)
 		return -EINVAL;
 	}
 	printk("<2>%s",basename);
-	if ((inode = minix1_look_up(dir_inode, basename))) {
-		iput(dir_inode);
+	if ((inode = find_entry(dir_inode, basename))) {
 		iput(inode);
 		return -EEXIST;
 	}

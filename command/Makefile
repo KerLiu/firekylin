@@ -22,6 +22,7 @@ commands:
 	$(CC) $(CFLAGS) -o mkdir.o mkdir.c
 	$(CC) $(CFLAGS) -o touch.o touch.c
 	$(CC) $(CFLAGS) -o cp.o cp.c
+	$(CC) $(CFLAGS) -o ll.o ll.c
 
 install:
 	$(LD) -o init init.o  $(LIB)
@@ -33,6 +34,7 @@ install:
 	$(LD) -o mkdir mkdir.o  $(LIB)
 	$(LD) -o touch touch.o  $(LIB)
 	$(LD) -o cp cp.o  $(LIB)
+	$(LD) -o ll ll.o  $(LIB)
 	mkdir tmpdir
 	sudo mount -t minix ../1.44.img -o loop tmpdir
 	cp   init tmpdir/bin/init
@@ -44,9 +46,10 @@ install:
 	cp   mkdir tmpdir/bin/mkdir
 	cp   touch tmpdir/bin/touch
 	cp   cp tmpdir/bin/cp
+	cp   ll tmpdir/bin/ll
 	sudo umount ../1.44.img
 	rmdir tmpdir
 
 clean:
-	-del init sh ls echo cat
-	-del init.o sh.o ls.o  echo.o cat.o 
+	-del init sh ls echo cat mkdir cp ll
+	-del init.o sh.o ls.o  echo.o cat.o  mkdir.o cp.o ll.o

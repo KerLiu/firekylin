@@ -10,6 +10,7 @@
 #include <sys/types.h>
 #include <sys/times.h>
 #include <errno.h>
+#include <time.h>
 
 static struct tss_struct tss;
 
@@ -175,4 +176,18 @@ int sys_times(struct tms *tmsptr)
 		tmsptr->tms_cstime = task->cstime;
 	}
 	return task->start;
+}
+
+int sys_alarm(unsigned long seconds)
+{
+	long old;
+	struct task *current;
+
+	current=CURRENT_TASK();
+	old=current->alarm;
+
+	current->alarm=seconds ? (clock+seconds*CLOCKS_PER_SEC) : 0;
+	if(old)
+		return (old-clock)/CLOCKS_PER_SEC;
+	return 0;
 }
