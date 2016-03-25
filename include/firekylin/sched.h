@@ -9,6 +9,7 @@
 
 #include <sys/types.h>
 #include <signal.h>
+#include <time.h>
 
 struct tss_struct {
 	unsigned long link;
@@ -83,6 +84,7 @@ struct task {
 #define TASK_WAIT	2
 #define TASK_EXIT	3
 #define TASK_WAIT_CHLD	4
+#define TASK_SIGWAIT	5
 
 #define NR_TASK		16
 
@@ -123,6 +125,8 @@ struct task {
 		"__ret_switch:  ;"		\
 		::"c"(task_table[n]->kesp));	\
     })
+
+#define current_time()	start_time + clock / CLOCKS_PER_SEC;
 
 extern struct task * task_table[];
 

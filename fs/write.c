@@ -41,24 +41,9 @@ static int write_blk(int dev, char *buf, long off, size_t size)
 	return size - left;
 }
 
-static int write_file(struct inode *inode, char * buf, off_t off, int count)
+static int write_file(struct inode *inode, char * buf, off_t off, int size)
 {
-	struct buffer *buffer;
-	int left = count;
-	char nr;
-
-	while (left) {
-		buffer = bread(inode->i_dev, minix1_wbmap(inode, off / 1024));
-		if (!buffer) {
-			panic("EIO");
-		}
-		nr = min((1024 - off % 1024), left);
-		memcpy(buffer->b_data+off%1024, buf, nr);
-		off += nr;
-		left -= nr;
-	}
-	brelse(buffer);
-	return count - left;
+	return inode->i_op->file_write(inode,buf,size,off,0);
 }
 
 extern int write_pipe(struct inode *inode,char *buf,size_t size);

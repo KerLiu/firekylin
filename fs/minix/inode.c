@@ -4,9 +4,7 @@
  *    Copyright (C) 2016 ximo<ximoos@foxmail.com>
  */
 
-#include <firekylin/kernel.h>
-#include <firekylin/fs.h>
-#include <sys/stat.h>
+#include "minix_fs.h"
 
 static void m1_read_inode(struct inode *inode, struct minix1_inode *m1)
 {
@@ -56,7 +54,7 @@ static void m1_write_inode(struct inode *inode, struct minix1_inode *m1)
 	inode->i_flag &= ~I_DIRTY;
 }
 
-static struct inode * __minix1_rw_inode(struct inode *inode, int rw)
+static int __minix1_rw_inode(struct inode *inode, int rw)
 {
 	struct super *super;
 	struct buffer *buf;
@@ -79,20 +77,21 @@ static struct inode * __minix1_rw_inode(struct inode *inode, int rw)
 		buf->b_flag|=B_DIRTY;
 	}
 	brelse(buf);
-	return inode;
+	return 0;
 }
 
-struct inode * minix1_read_inode(struct inode * inode)
+int minix1_read_inode(struct inode * inode)
 {
 	return __minix1_rw_inode(inode, 1);
 }
 
-struct inode * minix1_write_inode(struct inode * inode)
+int minix1_write_inode(struct inode * inode)
 {
 	return __minix1_rw_inode(inode, 0);
 }
 
-struct inode * minix1_look_up(struct inode *dir_inode, char *filename)
+int minix1_look_up(struct inode *dir_inode, char *filename,
+		struct inode **res_inode)
 {
 	struct buffer *buf;
 	struct inode *inode = NULL;
@@ -102,8 +101,12 @@ struct inode * minix1_look_up(struct inode *dir_inode, char *filename)
 
 	if (!dir_inode)
 		panic("minix1_look_up:dir_inode is NULL");
-	if (filename[0] == '.' && filename[1] == 0)
-		return dir_inode;
+
+	if (filename[0] == '.' && filename[1] == 0){
+		*res_inode=dir_inode;
+		return 0;
+	}
+
 	entries = dir_inode->i_size / sizeof(struct dir_entry);
 
 	buf = bread(dir_inode->i_dev, dir_inode->i_zone[0]);
@@ -119,13 +122,14 @@ struct inode * minix1_look_up(struct inode *dir_inode, char *filename)
 				inode = iget(dir_inode->i_dev, de->ino);
 				iput(dir_inode);
 			}
-			return inode;
+			*res_inode=inode;
+			return 0;
 		}
 		de++;
 	}
 	iput(dir_inode);
 	brelse(buf);
-	return NULL;
+	return 1;
 }
 
 static int __minix1_bmap(struct inode *inode, int block, int create)
@@ -138,7 +142,6 @@ static int __minix1_bmap(struct inode *inode, int block, int create)
 			inode->i_zone[block] = minix1_alloc_block(inode->i_dev);
 			inode->i_ctime = current_time();
 			inode->i_flag |= I_DIRTY;
-			printk("wbmp_come here");
 		}
 		return inode->i_zone[block];
 	}

@@ -25,5 +25,9 @@
 #define EMFILE		16
 #define EEXIST		17
 #define ENOSPACE	18
+#define ERSCH		19
+
+
+extern int errno;
 
 #endif

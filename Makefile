@@ -20,7 +20,8 @@ OBJS=init/head.o init/main.o  \
      mm/memory.o \
      fs/buffer.o fs/super.o fs/inode.o fs/read.o fs/stat.o fs/open.o \
      fs/write.o fs/fcntl.o fs/create.o fs/pipe.o fs/ioctl.o fs/close.o \
-     fs/minix/bitmap.o fs/minix/inode.o 
+     fs/minix/super.o fs/minix/inode.o fs/minix/bitmap.o \
+     fs/minix/namei.o fs/minix/file.o fs/minix/operation.o 
        
 .s.o:
 	@echo         AS	$<
@@ -59,6 +60,7 @@ clean:
 	-del init\*.o kernel\*.o driver\*.o fs\*.o fs\minix\*.o 
 	-del libc\*.a libc\*.o libc\string\*.o libc\unistd\*.o libc\stdlib\*.o
 	-del libc\ctype\*.o libc\crt\*.o libc\stdio\*.o
+	-del libc\signal\*.o
 	make clean -C command
 	
 run: System.img

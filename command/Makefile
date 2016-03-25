@@ -51,5 +51,5 @@ install:
 	rmdir tmpdir
 
 clean:
-	-del init sh ls echo cat mkdir cp ll
-	-del init.o sh.o ls.o  echo.o cat.o  mkdir.o cp.o ll.o
+	-del init sh ls echo cat mkdir cp sync touch ll
+	-del *.o

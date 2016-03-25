@@ -43,23 +43,7 @@ static int read_blk(int dev, char *buf, long off, size_t size)
 
 static int read_file(struct inode *inode, char * buf, off_t off, size_t size)
 {
-	struct buffer *bh;
-	int block, chars, left;
-
-	left = size;
-	while (left > 0) {
-		bh = bread(inode->i_dev, minix1_rbmap(inode, off / 1024));
-		if (!bh) {
-			panic("EIO");
-		}
-		chars = min(left, 1024 - off % 1024);
-		memcpy(buf, bh->b_data+off%1024, chars);
-		brelse(bh);
-		buf += chars;
-		off += chars;
-		left -= chars;
-	}
-	return size - left;
+	return inode->i_op->file_read(inode,buf,size,off,0);
 }
 
 extern int read_pipe(struct inode *inode, char *buf, size_t size);

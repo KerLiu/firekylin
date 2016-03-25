@@ -69,6 +69,7 @@ struct inode * idup(struct inode *inode)
 
 struct inode * iget(dev_t dev, ino_t ino)
 {
+	struct super * super;
 	struct inode * inode;
 
 	lock_inode_table();
@@ -93,15 +94,19 @@ no_dev:
 			unlock_inode_table();
 			ilock(inode);
 			if(inode->i_flag&I_DIRTY){
-				minix1_write_inode(inode);
+				inode->i_op->inode_write(inode);
 				iunlock(inode);
 				goto repeat;
 			}
 			inode->i_dev = dev;
 			inode->i_ino = ino;
 			inode->i_flag =I_BUSY ;
-			if (dev)
-				minix1_read_inode(inode);
+			if (dev){
+				super=get_super(dev);
+				inode->i_op=super->s_op;
+				put_super(super);
+				inode->i_op->inode_read(inode);
+			}
 			return inode;
 		}
 		inode++;
@@ -119,7 +124,7 @@ void iput(struct inode * inode)
 		panic("put_inode:put free inode");
 
 	if (--inode->i_count == 0) {
-		minix1_write_inode(inode);
+		inode->i_op->inode_write(inode);
 	}
 	iunlock(inode);
 }
@@ -153,7 +158,7 @@ struct inode *namei(char *filepath, char **basename)
 		if (*filepath == '/')
 			filepath++;
 
-		if (!(inode = minix1_look_up(inode, name))) {
+		if (inode->i_op->look_up(inode, name,&inode)) {
 			return NULL;
 		}
 	}
@@ -167,7 +172,7 @@ void sync_inode()
 	while (inode < inode_table + NR_INODE) {
 		ilock(inode);
 		if (inode->i_flag & I_DIRTY) {
-			minix1_write_inode(inode);
+			inode->i_op->inode_write(inode);
 			inode->i_flag &= ~I_DIRTY;
 		}
 		iunlock(inode);

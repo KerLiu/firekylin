@@ -4,8 +4,7 @@
  *    Copyright (C) 2016 ximo<ximoos@foxmail.com>
  */
 
-#include <firekylin/kernel.h>
-#include <firekylin/fs.h>
+#include "minix_fs.h"
 
 static int find_bit(char *addr, int size)
 {
@@ -34,7 +33,7 @@ static void clr_bit(char *addr, int bit)
 	*(addr + bit / 8) = *(addr + bit / 8) & (~(1 << (bit % 8)));
 }
 
-void minix1_free_block(dev_t dev, int block)
+int minix1_free_block(dev_t dev, int block)
 {
 	struct buffer * buf;
 	struct super *super = get_super(dev);
@@ -49,9 +48,10 @@ void minix1_free_block(dev_t dev, int block)
 	clr_bit(buf->b_data, block % (8 * 1024));
 	buf->b_flag |= B_DIRTY;
 	brelse(buf);
+	return 0;
 }
 
-void minix1_free_inode(dev_t dev, ino_t ino)
+int minix1_free_inode(dev_t dev, ino_t ino)
 {
 	struct buffer * buf;
 	struct super *super = get_super(dev);
@@ -63,6 +63,7 @@ void minix1_free_inode(dev_t dev, ino_t ino)
 	clr_bit(buf->b_data, ino % (8 * 1024));
 	buf->b_flag |= B_DIRTY;
 	brelse(buf);
+	return 0;
 }
 
 int minix1_alloc_block(dev_t dev)
@@ -95,7 +96,7 @@ int minix1_alloc_block(dev_t dev)
 	return 0;
 }
 
-ino_t minix1_alloc_inode(dev_t dev)
+int minix1_alloc_inode(dev_t dev)
 {
 	struct buffer *bh;
 	struct super *super;

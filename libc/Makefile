@@ -23,7 +23,10 @@ OBJS= crt/crt.o  \
       ctype/__ctype.o ctype/isalnum.o ctype/isalpha.o ctype/iscntrl.o \
       ctype/isdigit.o ctype/islower.o ctype/isprint.o ctype/ispuntc.o \
       ctype/isupper.o ctype/isxdigit.o ctype/isspace.o ctype/isgraph.o \
-      ctype/tolower.o ctype/toupper.o
+      ctype/tolower.o ctype/toupper.o  \
+      signal/sigaction.o   signal/sigaddset.o  signal/sigdelset.o   \
+      signal/sigemptyset.o signal/sigfillset.o signal/sigismember.o \
+      signal/sigprocmask.o
 
 .s.o:
 	@echo         AS	$<

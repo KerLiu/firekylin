@@ -49,25 +49,6 @@ static inline void unlock_super(struct super *sb)
 	irq_unlock();
 }
 
-static void minix1_read_super(struct super *super)
-{
-	struct minix1_super *m1_super;
-	struct buffer *buf;
-
-	buf = bread(super->s_dev, 1);
-
-	m1_super = (struct minix1_super *) (buf->b_data);
-	super->s_inodes = m1_super->s_ninodes;
-	super->s_zones = m1_super->s_nzones;
-	super->s_imap_blocks = m1_super->s_imap_blocks;
-	super->s_zmap_blocks = m1_super->s_zmap_blocks;
-	super->s_first_data_zone = m1_super->s_firstdatazone;
-	super->s_log_zone_size = m1_super->s_log_zone_size;
-	super->s_max_size = m1_super->s_max_size;
-
-	brelse(buf);
-}
-
 struct super * get_super(dev_t dev)
 {
 	struct super *super = super_table;
@@ -98,26 +79,6 @@ void put_super(struct super *super)
 
 }
 
-//void dump_super(void)
-//{
-//	struct super *super;
-//
-//	for (super = super_table; super < super_table + NR_SUPER; super++) {
-//		if (super->s_dev) {
-//			printk("s_dev    %x\t", super->s_dev);
-//			printk("s_inodes %d\t", super->s_inodes);
-//			printk("s_zones  %d\t", super->s_zones);
-//			printk("s_imap   %d\t", super->s_imap_blocks);
-//			printk("s_zmap   %d\t", super->s_zmap_blocks);
-//			printk("s_fdzone %d\t", super->s_first_data_zone);
-//			printk("s_lzsize %d\t", super->s_log_zone_size);
-//			printk("s_msize  %x\t", super->s_max_size);
-//			printk("s_flag   %x\t", super->s_flag);
-//			printk("s_count  %d\n", super->s_count);
-//		}
-//	}
-//}
-
 int sys_mount(char *dev_name, char *dir_name, long ro_flag)
 {
 	return -ERROR;
@@ -135,7 +96,8 @@ void mount_root(void)
 	struct task *task = CURRENT_TASK();
 
 	super->s_dev = ROOT_DEV;
-	minix1_read_super(super);
+	super->s_op=&minix_fs_operation;
+	super->s_op->super_read(super);
 	root_inode = iunlock(iget(ROOT_DEV, 1));
 	task->pwd = iunlock(idup(root_inode));
 }
