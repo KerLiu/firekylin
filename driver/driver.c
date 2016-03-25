@@ -16,7 +16,7 @@ void read_block(struct buffer* buf)
 	int major = MAJOR(buf->b_dev);
 	if (major > DEV_BLK_MAX || !blk_table[major])
 		panic("dev %x not exsit", buf->b_dev);
-	(*(blk_table[major]->read))(buf);
+	blk_table[major]->read(buf);
 }
 
 void write_block(struct buffer* buf)
@@ -24,5 +24,5 @@ void write_block(struct buffer* buf)
 	int major = MAJOR(buf->b_dev);
 	if (major > DEV_BLK_MAX || !blk_table[major])
 		panic("dev %x not exsit", buf->b_dev);
-	(*(blk_table[major]->write))(buf);
+	blk_table[major]->write(buf);
 }

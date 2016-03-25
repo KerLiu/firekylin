@@ -26,7 +26,9 @@ OBJS= crt/crt.o  \
       ctype/tolower.o ctype/toupper.o  \
       signal/sigaction.o   signal/sigaddset.o  signal/sigdelset.o   \
       signal/sigemptyset.o signal/sigfillset.o signal/sigismember.o \
-      signal/sigprocmask.o
+      signal/sigprocmask.o  \
+      dirent/opendir.o dirent/readdir.o dirent/rewinddir.o dirent/closedir.o
+      
 
 .s.o:
 	@echo         AS	$<

@@ -1,5 +1,5 @@
 /*
- *    fs/create.c
+ *    fs/pipe.c
  *
  *    Copyright (C) 2016 ximo<ximoos@foxmail.com>
  */

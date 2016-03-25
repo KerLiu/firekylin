@@ -10,8 +10,6 @@
 #include <termios.h>
 #include <firekylin/sched.h>
 
-
-
 #define TTY_BUF_SIZE 1024
 struct tty_buf {
 	char           buf[TTY_BUF_SIZE];

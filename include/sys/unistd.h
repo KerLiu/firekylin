@@ -36,7 +36,9 @@ extern int execve(char *filename, char **argv, char **envp);
 extern void _exit(int status);
 extern int sbrk(int inc);
 extern int dup(int fd);
+extern int dup2(int fd, int fd2);
 extern int chdir(char *dirname);
-extern int execvp(char * file, char ** argv);
+extern int close(int fd);
+extern int lseek(int fd,long off,int where);
 
 #endif

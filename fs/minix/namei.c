@@ -83,6 +83,48 @@ void add_entry(struct inode *inode, char *name, ino_t ino)
 	}
 }
 
+int minix1_look_up(struct inode *dir_inode, char *filename,
+		struct inode **res_inode)
+{
+	struct buffer *buf;
+	struct inode *inode = NULL;
+	struct dir_entry *de;
+	int entries;
+	int ino;
+
+	if (!dir_inode)
+		panic("minix1_look_up:dir_inode is NULL");
+
+	if (filename[0] == '.' && filename[1] == 0){
+		*res_inode=dir_inode;
+		return 0;
+	}
+
+	entries = dir_inode->i_size / sizeof(struct dir_entry);
+
+	buf = bread(dir_inode->i_dev, dir_inode->i_zone[0]);
+
+	de = (struct dir_entry *) buf->b_data;
+	while (entries--) {
+		if (!strncmp(de->name, filename, NAME_LEN)) {
+			ino = de->ino;
+			brelse(buf);
+			if(ino ==dir_inode->i_ino){
+				inode=dir_inode;
+			}else{
+				inode = iget(dir_inode->i_dev, de->ino);
+				iput(dir_inode);
+			}
+			*res_inode=inode;
+			return 0;
+		}
+		de++;
+	}
+	iput(dir_inode);
+	brelse(buf);
+	return 1;
+}
+
 int sys_create2(char *pathname)
 {
 	struct inode *dir_inode, *inode;

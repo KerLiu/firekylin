@@ -28,12 +28,12 @@ struct tm {
 
 struct timeval {
 	time_t tv_sec; 	/* Seconds	*/
-	long tv_usec; 	/* Microseconds	*/
+	long   tv_usec; /* Microseconds	*/
 };
 
 struct timespec {
 	time_t tv_sec; 	/* Seconds	*/
-	long tv_nsec; 	/* Nanoseconds	*/
+	long   tv_nsec; /* Nanoseconds	*/
 };
 
 #define MIN    		(60L)

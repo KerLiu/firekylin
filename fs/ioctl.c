@@ -20,7 +20,7 @@ static int char_ioctl(dev_t dev, int cmd, long arg)
 		return -ENODEV;
 	}
 	if (char_table[major]->ioctl)
-		return (*(char_table[major]->ioctl))(dev, cmd, arg);
+		return char_table[major]->ioctl(dev, cmd, arg);
 	return -1;
 }
 
@@ -33,7 +33,7 @@ static int blk_ioctl(dev_t dev, int cmd, long arg)
 		return -ENODEV;
 	}
 	if (blk_table[major]->ioctl)
-		return (*(blk_table[major]->ioctl))(dev, cmd, arg);
+		return blk_table[major]->ioctl(dev, cmd, arg);
 	return -1;
 }
 

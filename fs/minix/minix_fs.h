@@ -52,6 +52,4 @@ extern int minix1_file_read(struct inode *inode, char * buf, size_t size,
 extern int minix1_file_write(struct inode *inode, char * buf, size_t size,
 		off_t off, int rw_flag);
 
-
-
 #endif

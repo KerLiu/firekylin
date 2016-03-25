@@ -9,9 +9,23 @@
 
 #include <sys/types.h>
 
-struct dirent{
-	ino_t  d_ino;
-	char * d_name;
+#define NAME_LEN	14
+struct dirent {
+	ino_t d_ino;
+	char  d_name[NAME_LEN];
 };
+
+#define BUF_SIZE	1024
+typedef struct {
+	int  d_fd;
+	int  d_size;
+	int  d_off;
+	char d_buf[BUF_SIZE];
+} DIR;
+
+DIR 	*opendir(char *filename);
+struct dirent *readdir(DIR *dp);
+void 	rewinddir(DIR *dp);
+int 	closedir(DIR *dp);
 
 #endif

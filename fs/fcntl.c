@@ -37,7 +37,7 @@ static int dupfd(int fd, unsigned int arg)
 	return -EMFILE;
 }
 
-static int lseek(struct file *file, long off, int where)
+static int do_lseek(struct file *file, long off, int where)
 {
 	switch (where) {
 		case F_SEEKSET:
@@ -74,7 +74,7 @@ int sys_fcntl(unsigned int fd, unsigned int cmd, unsigned long arg)
 		case F_SEEKSET:
 		case F_SEEKCUR:
 		case F_SEEKEND:
-			return lseek(file, arg, cmd);
+			return do_lseek(file, arg, cmd);
 		default:
 			return -EIO;
 	}

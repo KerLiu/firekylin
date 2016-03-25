@@ -17,10 +17,10 @@ static int write_char(dev_t dev, char *buf, off_t off, size_t size)
 	if (major > DEV_CHAR_MAX || !char_table[major])
 		panic("dev %x not exsit", dev);
 
-	return (*(char_table[major]->write))(dev, buf, off, size);
+	return char_table[major]->write(dev, buf, off, size);
 }
 
-static int write_blk(int dev, char *buf, long off, size_t size)
+static int write_blk(dev_t dev, char *buf, off_t off, size_t size)
 {
 	struct buffer *bh;
 	int block, chars, left;

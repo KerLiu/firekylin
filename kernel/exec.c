@@ -7,6 +7,7 @@
 #include <firekylin/kernel.h>
 #include <firekylin/mm.h>
 #include <firekylin/fs.h>
+#include <sys/stat.h>
 #include <errno.h>
 #include <elf.h>
 
@@ -88,6 +89,10 @@ int sys_exec(char *filename, char **argv, char **envp)
 
 	if (!(inode = namei(filename, NULL)))
 		return -ENOENT;
+	if(!S_ISREG(inode->i_mode)){
+		iput(inode);
+		return -EACCESS;
+	}
 
 	if (!(inode->i_zone[0]))
 		return -ENOEXEC;
@@ -95,8 +100,11 @@ int sys_exec(char *filename, char **argv, char **envp)
 	if (!(buf = bread(inode->i_dev, inode->i_zone[0])))
 		return -EIO;
 
-	if (!strncmp(buf->b_data, "\0x7FELF", 4))
+	if (!strncmp(buf->b_data, "\0x7FELF", 4)){
+		brelse(buf);
+		iput(inode);
 		return -ENOEXEC;
+	}
 
 	arg_page=copy_string(argv,envp);
 

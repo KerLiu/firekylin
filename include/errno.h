@@ -27,7 +27,6 @@
 #define ENOSPACE	18
 #define ERSCH		19
 
-
 extern int errno;
 
 #endif

@@ -20,7 +20,7 @@ int char_close(dev_t dev)
 	if (major > DEV_CHAR_MAX || !char_table[major])
 		panic("char dev not exist:%x", dev);
 	if (char_table[major]->close)
-		return (*(char_table[major]->close))(dev);
+		return char_table[major]->close(dev);
 	return 0;
 }
 
@@ -31,7 +31,7 @@ int blk_close(dev_t dev)
 	if (major > DEV_CHAR_MAX || !blk_table[major])
 		panic("block dev not exist:%x", dev);
 	if (blk_table[major]->close)
-		return (*(blk_table[major]->close))(dev);
+		return blk_table[major]->close(dev);
 	return 0;
 }
 

@@ -75,6 +75,4 @@ static inline char * strncpy(char *dst, char *src, size_t n)
 extern int printk(char * fmt, ...);
 extern void panic(char * fmt, ...);
 
-extern time_t current_time();
-
 #endif

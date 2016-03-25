@@ -18,10 +18,10 @@ static int read_char(dev_t dev, char *buf, off_t off, size_t size)
 	int major = MAJOR(dev);
 	if (major > DEV_CHAR_MAX || !char_table[major])
 		panic("dev %x not exsit", dev);
-	return (*(char_table[major]->read))(dev, buf, off, size);
+	return char_table[major]->read(dev, buf, off, size);
 }
 
-static int read_blk(int dev, char *buf, long off, size_t size)
+static int read_blk(dev_t dev, char *buf, off_t off, size_t size)
 {
 	struct buffer *bh;
 	int block, chars, left;

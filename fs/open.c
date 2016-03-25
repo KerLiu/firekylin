@@ -29,7 +29,7 @@ int char_open(dev_t dev)
 		return -ENODEV;
 	}
 	if (char_table[major]->open)
-		return (*(char_table[major]->open))(dev);
+		return char_table[major]->open(dev);
 	return 0;
 }
 
@@ -42,7 +42,7 @@ int blk_open(dev_t dev)
 		return -ENODEV;
 	}
 	if (blk_table[major]->open)
-		return (*(blk_table[major]->open))(dev);
+		return blk_table[major]->open(dev);
 	return 0;
 }
 

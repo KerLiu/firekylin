@@ -60,7 +60,7 @@ clean:
 	-del init\*.o kernel\*.o driver\*.o fs\*.o fs\minix\*.o 
 	-del libc\*.a libc\*.o libc\string\*.o libc\unistd\*.o libc\stdlib\*.o
 	-del libc\ctype\*.o libc\crt\*.o libc\stdio\*.o
-	-del libc\signal\*.o
+	-del libc\signal\*.o libc\dirent\*.o
 	make clean -C command
 	
 run: System.img
@@ -68,7 +68,6 @@ run: System.img
 
 dbg: System.img
 	bochsdbg -q -f bochsrc
-
 
 count:
 	@echo dirs: $(shell ls -lR |grep ^d |wc -l)
