@@ -90,6 +90,7 @@ struct fs_operation{
 	int (*mknod)(struct inode *inode, char *name, struct inode **res_inode);
 	int (*rename)(struct inode *inode,char *old,char *new);
 	int (*remove)(struct inode *inode,char *name);
+	int (*link)(struct inode *dir_inode,char *name,struct inode *inode);
 };
 
 struct file {

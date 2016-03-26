@@ -11,8 +11,8 @@
 
 #define NAME_LEN	14
 struct dirent {
-	ino_t d_ino;
-	char  d_name[NAME_LEN];
+	unsigned short d_ino;
+	char           d_name[NAME_LEN];
 };
 
 #define BUF_SIZE	1024

@@ -9,16 +9,11 @@
 #include <sys/stat.h>
 #include <stdio.h>
 #include <string.h>
-
-#define NAME_LEN	14
-struct dir_entry {
-	unsigned short ino;
-	char name[NAME_LEN];
-};
+#include <dirent.h>
 
 int main(int argc, char **argv)
 {
-	struct dir_entry *de;
+	struct dirent *de;
 	char buf[1024];
 	int fd;
 	int size = 0;
@@ -34,12 +29,12 @@ int main(int argc, char **argv)
 
 	while ((size = read(fd, buf, 1024))) {
 
-		entries = size / sizeof(struct dir_entry);
-		de = (struct dir_entry *) buf;
+		entries = size / sizeof(struct dirent);
+		de = (struct dirent *) buf;
 
 		while (entries--) {
-			if (de->ino)
-				printf("%s\t", de->name);
+			if (de->d_ino)
+				printf("%s\t", de->d_name);
 			de++;
 		}
 	}

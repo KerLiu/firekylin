@@ -25,6 +25,8 @@ commands:
 	$(CC) $(CFLAGS) -o ll.o ll.c
 	$(CC) $(CFLAGS) -o rename.o rename.c
 	$(CC) $(CFLAGS) -o mv.o mv.c
+	$(CC) $(CFLAGS) -o ed.o ed.c
+	$(CC) $(CFLAGS) -o link.o link.c
 
 install:
 	$(LD) -o init init.o  $(LIB)
@@ -39,6 +41,8 @@ install:
 	$(LD) -o ll ll.o  $(LIB)
 	$(LD) -o rename rename.o  $(LIB)
 	$(LD) -o mv mv.o  $(LIB)
+	$(LD) -o ed ed.o  $(LIB)
+	$(LD) -o link link.o  $(LIB)
 	mkdir tmpdir
 	sudo mount -t minix ../1.44.img -o loop tmpdir
 	cp   init tmpdir/bin/init
@@ -53,9 +57,11 @@ install:
 	cp   ll tmpdir/bin/ll
 	cp   rename tmpdir/bin/rename
 	cp   mv tmpdir/bin/mv
+	cp   ed tmpdir/bin/ed
+	cp   link tmpdir/bin/link
 	sudo umount ../1.44.img
 	rmdir tmpdir
 
 clean:
-	-del init sh ls echo cat mkdir cp sync touch ll rename mv
+	-del init sh ls echo cat mkdir cp sync touch ll rename mv ed link
 	-del *.o

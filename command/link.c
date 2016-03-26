@@ -1,16 +1,17 @@
 /*
- *    command/mkdir.c
+ *    command/link.c
  *
  *    Copyright (C) 2016 ximo<ximoos@foxmail.com>
  */
 
+#include <sys/syscall.h>
 #include <sys/unistd.h>
 #include <stdio.h>
 
 int main(int argc, char **argv)
 {
-	if(argc<2){
-		printf("Usage:mkdir name ...");
+	if(argc<3){
+		printf("Usage:link name newname");
 	}
-	return mkdir(argv[1],0777);
+	return link(argv[1],argv[2]);
 }

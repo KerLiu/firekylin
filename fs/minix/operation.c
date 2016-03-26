@@ -16,5 +16,6 @@ struct fs_operation minix_fs_operation={
 	minix1_file_write,
 	minix1_mknod,
 	minix1_rename,
-	minix1_remove
+	minix1_remove,
+	minix1_link
 };

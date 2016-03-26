@@ -231,9 +231,29 @@ int minix1_remove(struct inode *inode, char *name)
 	}
 
 	del_inode->i_nlink--;
+	del_inode->i_flag|=I_DIRTY;
 	iput(del_inode);
 	de->ino = 0;
 	buf->b_flag |= B_DIRTY;
 	brelse(buf);
 	return 0;
+}
+
+int minix1_link(struct inode *dir_inode,char *name, struct inode *inode)
+{
+	struct buffer *buf;
+	struct dir_entry *de;
+	struct dir_entry new_de;
+
+	buf=find_entry(dir_inode,name,&de);
+	if(buf){
+		brelse(buf);
+		return -EEXIST;
+	}
+
+	inode->i_nlink++;
+	inode->i_flag|=I_DIRTY;
+	new_de.ino=inode->i_ino;
+	strncpy(new_de.name,name,NAME_LEN);
+	return add_entry(dir_inode,&new_de);
 }

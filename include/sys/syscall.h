@@ -49,8 +49,6 @@
 #define __NR_getime		39
 #define __NR_setime		40
 #define __NR_sync		41
-#define __NR_mkdir		42
-#define __NR_fcreate		43
 
 #define __syscall0(type,name) 			\
 type name(void)					\

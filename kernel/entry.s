@@ -21,7 +21,7 @@ extern  sys_open,   sys_read,    sys_write,   sys_close,   sys_fcntl
 extern  sys_ioctl,  sys_chdir,   sys_pipe,    sys_create,  sys_link
 extern  sys_rename, sys_remove,  sys_mount,   sys_umount,  sys_stat
 extern  sys_fstat,  sys_chmod,   sys_chown,   sys_utime,   sys_getime
-extern  sys_setime, sys_sync,    sys_mkdir,   sys_create2
+extern  sys_setime, sys_sync
 
 syscall_table:
 	dd  sys_fork,   sys_exec,    sys_sbrk,    sys_pwait,   sys_exit
@@ -32,7 +32,7 @@ syscall_table:
 	dd  sys_ioctl,  sys_chdir,   sys_pipe,    sys_create,  sys_link
 	dd  sys_rename, sys_remove,  sys_mount,   sys_umount,  sys_stat
 	dd  sys_fstat,  sys_chmod,   sys_chown,   sys_utime,   sys_getime
-	dd  sys_setime, sys_sync,    sys_mkdir,   sys_create2
+	dd  sys_setime, sys_sync
 
 div_zero:
 	push 0

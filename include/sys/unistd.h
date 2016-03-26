@@ -40,5 +40,8 @@ extern int dup2(int fd, int fd2);
 extern int chdir(char *dirname);
 extern int close(int fd);
 extern int lseek(int fd,long off,int where);
+extern int mkdir(char *name,mode_t mode);
+extern int link(char *name, char *newname);
+extern int sync(void);
 
 #endif

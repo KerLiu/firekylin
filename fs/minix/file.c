@@ -49,7 +49,8 @@ int minix1_file_write(struct inode *inode, char * buf, size_t size, off_t off,
 		memcpy(bh->b_data + off % 1024, buf, chars);
 		off += chars;
 		left -= chars;
+		bh->b_flag|=B_DIRTY;
+		brelse(bh);
 	}
-	brelse(bh);
 	return size - left;
 }

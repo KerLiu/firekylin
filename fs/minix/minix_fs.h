@@ -55,4 +55,6 @@ extern int minix1_mknod(struct inode *inode, char *name,
 		struct inode **res_inode);
 extern int minix1_rename(struct inode *inode, char *old, char *new);
 extern int minix1_remove(struct inode *inode, char *name);
+extern int minix1_link(struct inode *dir, char *name, struct inode *inode);
+
 #endif

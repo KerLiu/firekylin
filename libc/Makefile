@@ -15,11 +15,11 @@ OBJS= crt/crt.o  \
       string/memcpy.o string/memset.o string/strcat.o string/strcpy.o \
       string/strlen.o string/strncpy.o string/strcmp.o string/vsprintf.o \
       string/strerror.o unistd/fork.o unistd/getpid.o  string/strncmp.o \
-      unistd/getuid.o unistd/setuid.o unistd/setsid.o   \
-      unistd/errno.o  unistd/open.o unistd/read.o unistd/stat.o \
+      unistd/getuid.o unistd/setuid.o unistd/setsid.o  unistd/create.o \
+      unistd/errno.o  unistd/open.o unistd/read.o unistd/stat.o unistd/link.o \
       unistd/execve.o unistd/_exit.o unistd/waitpid.o unistd/sbrk.o \
       stdio/printf.o  unistd/write.o unistd/dup.o unistd/fstat.o \
-      unistd/chdir.o \
+      unistd/chdir.o unistd/close.o  unistd/sync.o unistd/mkdir.o \
       ctype/__ctype.o ctype/isalnum.o ctype/isalpha.o ctype/iscntrl.o \
       ctype/isdigit.o ctype/islower.o ctype/isprint.o ctype/ispuntc.o \
       ctype/isupper.o ctype/isxdigit.o ctype/isspace.o ctype/isgraph.o \
