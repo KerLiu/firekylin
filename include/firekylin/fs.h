@@ -82,11 +82,14 @@ struct fs_operation{
 	int (*super_write)(struct super *super);
 	int (*inode_read)(struct inode *inode);
 	int (*inode_write)(struct inode *inode);
-	int (*look_up)(struct inode *inode ,char *filename,struct inode **res);
+	int (*look_up)(struct inode *inode, char *filename, struct inode **res);
 	int (*file_read)(struct inode *inode, char *buf, size_t size,
 			off_t offset, int rw_flag);
 	int (*file_write)(struct inode *inode, char *buf, size_t size,
 			off_t offset, int rw_flag);
+	int (*mknod)(struct inode *inode, char *name, struct inode **res_inode);
+	int (*rename)(struct inode *inode,char *old,char *new);
+	int (*remove)(struct inode *inode,char *name);
 };
 
 struct file {

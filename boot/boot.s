@@ -87,5 +87,5 @@ gdt_48:
 
 	times 508-($-$$) db 0
 size:
-	dw  2
+	dw  3
 	dw  0xaa55

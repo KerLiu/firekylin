@@ -1,5 +1,5 @@
 /*
- *    command/mkdir.c
+ *    command/rename.c
  *
  *    Copyright (C) 2016 ximo<ximoos@foxmail.com>
  */
@@ -8,12 +8,13 @@
 #include <sys/unistd.h>
 #include <stdio.h>
 
-__syscall1(int,mkdir,char *,filename);
+__syscall2(int,rename,char *,old,char *,new);
 
 int main(int argc, char **argv)
 {
-	if(argc<2){
-		printf("Usage:mkdir name ...");
+	if(argc<3){
+		printf("usage: rename oldfilename newfilename");
 	}
-	return mkdir(argv[1]);
+
+	return rename(argv[1],argv[2]);
 }

@@ -89,6 +89,7 @@ int sys_exec(char *filename, char **argv, char **envp)
 
 	if (!(inode = namei(filename, NULL)))
 		return -ENOENT;
+
 	if(!S_ISREG(inode->i_mode)){
 		iput(inode);
 		return -EACCESS;

@@ -42,14 +42,17 @@ extern int minix1_write_inode(struct inode * inode);
 extern int minix1_look_up(struct inode *dir_inode, char *filename,
 		struct inode **res_inode);
 extern int minix1_alloc_block(dev_t dev);
-extern int minix1_free_block(dev_t dev,int block);
+extern int minix1_free_block(dev_t dev, int block);
 extern int minix1_alloc_inode(dev_t dev);
-extern int minix1_free_inode(dev_t dev,ino_t ino);
+extern int minix1_free_inode(dev_t dev, ino_t ino);
 extern int minix1_rbmap(struct inode *inode, int block);
 extern int minix1_wbmap(struct inode *inode, int block);
 extern int minix1_file_read(struct inode *inode, char * buf, size_t size,
 		off_t off, int rw_flag);
 extern int minix1_file_write(struct inode *inode, char * buf, size_t size,
 		off_t off, int rw_flag);
-
+extern int minix1_mknod(struct inode *inode, char *name,
+		struct inode **res_inode);
+extern int minix1_rename(struct inode *inode, char *old, char *new);
+extern int minix1_remove(struct inode *inode, char *name);
 #endif

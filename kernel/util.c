@@ -86,7 +86,7 @@ void panic(char* fmt, ...)
 	va_list ap;
 	int i;
 
-	printk("\n\n%sKernel Panic: ");
+	printk("\n\nKernel Panic: ");
 	va_start(ap, fmt);
 	i = sformat(printk_buf, fmt, ap);
 	tty_write(0,printk_buf, 0,i);

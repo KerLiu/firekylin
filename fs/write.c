@@ -83,10 +83,12 @@ int sys_write(int fd, char *buf, size_t size)
 		default:
 			res = -EIO;
 	}
-	iput(inode);
 
 	if (res > 0)
 		file->f_pos += res;
+	if(file->f_pos>inode->i_size)
+		inode->i_size=file->f_pos;
 
+	iput(inode);
 	return res;
 }

@@ -26,6 +26,7 @@
 #define EEXIST		17
 #define ENOSPACE	18
 #define ERSCH		19
+#define EBUSY		20
 
 extern int errno;
 
