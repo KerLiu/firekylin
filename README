@@ -6,7 +6,7 @@ FireKylin
   Linux, I want it do not just a kernel, it also content command, sh, 
   untily,and so on, so I want it won't be like BSD.
     All of the Operating System development would be compatibe to one or 
-  two other Operating System, so that it would attact more people change 
+  two other Operating System, so that it would attract more people change 
   to it . But for FireKylin. I just want to implemente it by my idea, I 
   really do not want to compatibe Operating System. But I would refer to 
   the design of other Opertimg System and porting code for them, like Linux,
